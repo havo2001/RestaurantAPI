@@ -22,7 +22,6 @@ class User(db.Model):
         s = Serializer(app.config['SECRET_KEY'], expires_in=expiration)
         return s.dumps({'id': self.id})
 
-
     @staticmethod
     def verify_auth_token(token):
         s = Serializer(app.config['SECRET_KEY'])
@@ -36,13 +35,22 @@ class User(db.Model):
         return user
 
 
-
 class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     table_id = db.Column(db.Integer)
     username = db.Column(db.String(64))
     status = db.Column(db.String(64))
     date_order = db.Column(db.String)  # "%d-%m-%Y"
+    added_note = db.Column(db.String)
+
+    @property
+    def serialize(self):
+        return {
+            'table_id': self.id,
+            'username': self.username,
+            'date_order': self.date_order,
+            'note': self.added_note
+        }
 
 
 

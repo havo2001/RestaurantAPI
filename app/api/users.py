@@ -4,12 +4,13 @@ from app.models import User
 from app.api.errors import bad_request
 from app.api.auth import auth, g
 
-
+# Home page
 @app.route('/users/login', methods=['GET'])
 @auth.login_required()
 def login():
     return jsonify({'username': g.user.username, 'email': g.user.email, 'bonus': g.user.bonus}), 201, {
         'Location': url_for('get_user', id=g.user.id, _external=True)}
+
 
 # Get the information of user
 @app.route('/users/<int:id>', methods=['GET'])
@@ -45,7 +46,7 @@ def new_user():
 @app.route('/users/<int:id>', methods=['PUT'])
 @auth.login_required
 def update_user(id):
-    if g.user.id == id:
+    if g.user.id != id:
         abort(403)
     user = User.query.get(id)
     data = request.get_json()
