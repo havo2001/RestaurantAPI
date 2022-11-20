@@ -46,7 +46,7 @@ class Order(db.Model):
     @property
     def serialize(self):
         return {
-            'table_id': self.id,
+            'table_id': self.table_id,
             'username': self.username,
             'date_order': self.date_order,
             'note': self.added_note
