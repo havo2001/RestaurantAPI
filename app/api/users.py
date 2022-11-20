@@ -5,14 +5,14 @@ from app.api.errors import bad_request
 from app.api.auth import auth, g
 
 
-@app.route('/api/users/login', methods=['GET'])
+@app.route('/users/login', methods=['GET'])
 @auth.login_required()
 def login():
     return jsonify({'username': g.user.username, 'email': g.user.email, 'bonus': g.user.bonus}), 201, {
         'Location': url_for('get_user', id=g.user.id, _external=True)}
 
 # Get the information of user
-@app.route('/api/users/<int:id>', methods=['GET'])
+@app.route('/users/<int:id>', methods=['GET'])
 def get_user(id):
     user = User.query.get(id)
     if not user:
@@ -21,7 +21,7 @@ def get_user(id):
 
 
 # Registration
-@app.route('/api/users', methods=['POST'])
+@app.route('/users', methods=['POST'])
 def new_user():
     data = request.get_json()
     if data['username'] is None or data['password'] is None or data['email'] is None:
@@ -42,7 +42,7 @@ def new_user():
 
 
 # Update user, change the email or password:
-@app.route('/api/users/<int:id>', methods=['PUT'])
+@app.route('/users/<int:id>', methods=['PUT'])
 @auth.login_required
 def update_user(id):
     if g.user.id == id:

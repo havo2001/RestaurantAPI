@@ -7,13 +7,13 @@ from datetime import date, timedelta, datetime
 number_of_tables = 10
 
 
-@app.route('/api/order')
+@app.route('/order')
 @auth.login_required
 def get_resource():
     return jsonify({'data': 'Hello, %s. Welcome to our restaurant!' % g.user.username})
 
 
-@app.route('/api/order/preorder/<int:table_id>/<date_order>')
+@app.route('/order/preorder/<int:table_id>/<date_order>')
 @auth.login_required
 def pre_order(table_id, date_order):
     # Convert string date_order to date type:
@@ -39,7 +39,7 @@ def pre_order(table_id, date_order):
         return jsonify({'data': 'So sorry that table %d has been already ordered, please choose another one' % table_id})
 
 
-@app.route('/api/order/check/<int:table_id>/<date_order>')
+@app.route('/order/check/<int:table_id>/<date_order>')
 @auth.login_required
 def check_table(table_id, date_order):
     # Convert string date_order to date type:
