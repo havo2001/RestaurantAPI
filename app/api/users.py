@@ -1,6 +1,17 @@
 from app import app, db
 from flask import request, jsonify, abort, url_for
 from app.models import User
+from app.api.errors import bad_request
+from app.api.auth import auth, g
+
+
+# Get the information of user
+@app.route('/api/users/<int:id>', methods=['GET'])
+def get_user(id):
+    user = User.query.get(id)
+    if not user:
+        return bad_request('This id has been not registered')
+    return jsonify({'username': user.username, 'email': user.email, 'bonus': user.bonus})
 
 
 # Registration
@@ -24,9 +35,21 @@ def new_user():
         'Location': url_for('get_user', id=user.id, _external=True)}
 
 
-@app.route('/api/users/<int:id>')
-def get_user(id):
+# Update user, change the email or password:
+@app.route('/api/users/<int:id>', methods=['PUT'])
+@auth.login_required
+def update_user(id):
+    if g.user.id == id:
+        abort(403)
     user = User.query.get(id)
-    if not user:
-        abort(400)
-    return jsonify({'username': user.username, 'email': user.email, 'bonus': user.bonus})
+    data = request.get_json()
+    if 'email' in data and data['email'] != user.email and User.query.filter_by(email=data['email']).first():
+        return bad_request('This email has been registered, please use another email')
+
+    if 'email' in data:
+        user.email = data['email']
+
+    if 'password' in data:
+        user.hash_password(data['password'])
+    db.session.commit()
+    return jsonify({'data': 'Your information has been updated'})

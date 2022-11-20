@@ -5,6 +5,7 @@ from app.models import Order
 
 number_of_tables = 5
 
+
 @app.route('/api/order')
 @auth.login_required
 def get_resource():
@@ -22,9 +23,9 @@ def pre_order(id):
         g.user.bonus += 1
         db.session.add(new_order)
         db.session.commit()
-        return jsonify({'data': 'You has successfully ordered table %d' %id})
+        return jsonify({'data': '%s has successfully ordered table %d' % (g.user.username, id)})
     else:
-        return jsonify({'data': 'So sorry that table %d has been already ordered, please choose another one' %id})
+        return jsonify({'data': 'So sorry that table %d has been already ordered, please choose another one' % id})
 
 
 @app.route('/api/order/check/<int:id>')
@@ -36,5 +37,4 @@ def check_table(id):
     if not order:
         return jsonify({'data': 'Table %d is free. You can pick it up!' % id})
     else:
-        return jsonify({'data': 'So sorry that table %d has been already ordered, please choose another one' %id})
-
+        return jsonify({'data': 'So sorry that table %d has been already ordered, please choose another one' % id})
