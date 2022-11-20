@@ -1,8 +1,8 @@
 from werkzeug.security import generate_password_hash, check_password_hash
-from app import db
+from app import db, app
 from itsdangerous import (TimedJSONWebSignatureSerializer
                           as Serializer, BadSignature, SignatureExpired)
-from app import app
+
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -39,7 +39,11 @@ class User(db.Model):
 
 class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    table_id = db.Column(db.Integer)
     username = db.Column(db.String(64))
-    status = db.Column(db.String(64), default=False)
+    status = db.Column(db.String(64))
+    date_order = db.Column(db.String)  # "%d-%m-%Y"
+
+
 
 

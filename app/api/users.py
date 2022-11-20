@@ -5,6 +5,12 @@ from app.api.errors import bad_request
 from app.api.auth import auth, g
 
 
+@app.route('/api/users/login', methods=['GET'])
+@auth.login_required()
+def login():
+    return jsonify({'username': g.user.username, 'email': g.user.email, 'bonus': g.user.bonus}), 201, {
+        'Location': url_for('get_user', id=g.user.id, _external=True)}
+
 # Get the information of user
 @app.route('/api/users/<int:id>', methods=['GET'])
 def get_user(id):
@@ -53,3 +59,4 @@ def update_user(id):
         user.hash_password(data['password'])
     db.session.commit()
     return jsonify({'data': 'Your information has been updated'})
+
