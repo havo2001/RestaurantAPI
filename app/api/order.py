@@ -114,6 +114,8 @@ def cancel_order():
 
     order = Order.query.filter_by(username=g.user.username, table_id=data['table_id'],
                                   date_order=data['date_order']).first()
+    if order is None:
+        return bad_request("Incorrect information")
     db.session.delete(order)
     return jsonify({'data': 'You have already canceled this order'})
 
