@@ -4,6 +4,12 @@ from app.models import User
 from app.api.errors import bad_request
 from app.api.auth import auth, g
 
+# Index page
+@app.route('/', methods=['GET'])
+def home():
+    return jsonify("hello")
+
+
 # Home page
 @app.route('/users/login', methods=['GET'])
 @auth.login_required()
