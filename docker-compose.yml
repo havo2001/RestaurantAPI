@@ -18,3 +18,4 @@ services:
       - POSTGRES_PASSWORD=150101
       - POSTGRES_DB=restaurant
 
+
