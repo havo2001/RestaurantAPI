@@ -4,6 +4,7 @@ from app.models import User
 from app.api.errors import bad_request
 from app.api.auth import auth, g
 
+
 # Index page
 @app.route('/', methods=['GET'])
 def home():
@@ -66,4 +67,3 @@ def update_user(id):
         user.hash_password(data['password'])
     db.session.commit()
     return jsonify({'data': 'Your information has been updated'})
-
