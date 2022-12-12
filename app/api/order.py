@@ -117,5 +117,6 @@ def cancel_order():
     if order is None:
         return bad_request("Incorrect information")
     db.session.delete(order)
+    db.session.commit()
     return jsonify({'data': 'You have already canceled this order'})
 

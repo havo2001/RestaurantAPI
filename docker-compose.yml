@@ -2,13 +2,12 @@ version: '3'
 
 services:
   app:
-#    docker-compose up --build
     build: .
     container_name: restaurant_api
     ports:
-      - 5000:5000
-    environment:
-      - DATABASE_URL=postgresql://postgres:150101@localhost:5432/restaurant
+      - "5000:5000"
+    env_file:
+      - ./.env
     depends_on:
       - db
   db:
@@ -17,5 +16,10 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=150101
       - POSTGRES_DB=restaurant
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-db:/var/lib/postgresql/data
 
-
+volumes:
+  postgres-db:
