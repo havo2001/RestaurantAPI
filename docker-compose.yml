@@ -6,8 +6,12 @@ services:
     container_name: restaurant_api
     ports:
       - "5000:5000"
-    env_file:
-      - ./.env
+    environment:
+      - POSTGRES_HOSTNAME=db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=150101
+      - POSTGRES_DB=restaurant
+      - POSTGRES_PORT=5432
     depends_on:
       - db
   db:
