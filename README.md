@@ -21,4 +21,14 @@ First you need to git clone this repository:
 7. ```flask db upgrade```
 8. ```exit```
 9. ```minikube service api-service ``` and then it will work
-
+### Permanent disk storage:
+Everytime you run the kubernetes, the database will create one, but we don't want this happens so we need permanent disk storage
+1. First you need to delete old deployment, old pod. ```kubectl pod delete```, ```kubectl deployment delete```, delete the old services. ```kubectl get svc``` to get all the services
+2. ``` kubectl apply -f .\kubernetes\pv.yaml  ```
+3. ``` kubectl apply -f .\kubernetes\postgres-stateful.yaml```
+4. ```kubectl apply -f .\kubernetes\api-deployment.yaml ``` 
+5. ```kubectl get pod``` to show the pods, and copy the name of "api-deployment"
+6. ```kubectl exec -it "api-deployment"  //bin//sh``` to open the shell
+7. ```flask db upgrade```
+8. ```exit```
+9. ```minikube service api-service ``` and then it will work
