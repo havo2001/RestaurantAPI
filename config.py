@@ -2,7 +2,7 @@ import os
 
 
 class Config(object):
-    SECRET_KEY = 'Hello, my name is Ha'
+    SECRET_KEY = os.environ.get('SECRET_KEY')
     db_hostname = os.environ.get('POSTGRES_HOSTNAME')
     db_username = os.environ.get('POSTGRES_USERNAME')
     db_password = os.environ.get('POSTGRES_PASSWORD')
